@@ -37,7 +37,15 @@ Return exactly ${count} leads. Return ONLY the JSON object, nothing else.`,
         messages: [
           {
             role: "user",
-            content: `Find ${count} real business prospects matching this description: "${query}". Focus on businesses that genuinely operate in regulated spaces and would benefit from compliance auditing and AI compliance tools. Return the JSON only.`,
+            content: `Find ${count} real business prospects matching this description: "${query}". 
+
+Important rules:
+- Exclude any well-known, widely recognised, or large-scale companies. Do not return household names, unicorns, or market leaders.
+- Focus on smaller, lesser-known, growing businesses that are likely operating without a dedicated compliance team.
+- These should be real businesses but ones that are under the radar, regional, or early stage.
+- They must genuinely operate in regulated spaces and would benefit from an external compliance audit.
+
+Return the JSON only.`,
           },
         ],
       }),
