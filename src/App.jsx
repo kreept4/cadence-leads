@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const HF_TOKEN = import.meta.env.VITE_HF_TOKEN;
+const FREEMODEL_KEY = import.meta.env.VITE_FREEMODEL_KEY;
 
 const INDUSTRIES = [
   { label: "Fintech", query: "Fintech startups and digital payment companies in Nigeria, UK, and Canada" },
@@ -46,16 +46,16 @@ Return ONLY the JSON object. No markdown, no backticks, no explanation.`;
 
 async function searchLeads(query, count) {
   const safeCount = Math.min(Number(count) || 5, 8);
-  const response = await fetch("https://router.huggingface.co/v1/chat/completions", {
+  const response = await fetch("https://cc.freemodel.dev/v1/chat/completions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${HF_TOKEN}`,
+      "Authorization": `Bearer ${FREEMODEL_KEY}`,
       
       
     },
     body: JSON.stringify({
-      model: "meta-llama/Llama-3.1-8B-Instruct:novita",
+      model: "claude-haiku-4-5-20251001",
       max_tokens: 2500,
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
