@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_KEY;
+const HF_TOKEN = import.meta.env.VITE_HF_TOKEN;
 
 const INDUSTRIES = [
   { label: "Fintech", query: "Fintech startups and digital payment companies in Nigeria, UK, and Canada" },
@@ -46,16 +46,16 @@ Return ONLY the JSON object. No markdown, no backticks, no explanation.`;
 
 async function searchLeads(query, count) {
   const safeCount = Math.min(Number(count) || 5, 8);
-  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+  const response = await fetch("https://router.huggingface.co/v1/chat/completions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
-      "HTTP-Referer": "https://cadence-leads-sigma.vercel.app",
-      "X-Title": "Cadence Leads",
+      "Authorization": `Bearer ${HF_TOKEN}`,
+      
+      
     },
     body: JSON.stringify({
-      model: "anthropic/claude-haiku-4-5",
+      model: "meta-llama/Llama-3.1-8B-Instruct:novita",
       max_tokens: 2500,
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
