@@ -293,18 +293,7 @@ export default function App() {
         display: "flex", alignItems: "center", justifyContent: "space-between", height: 60,
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{
-            width: 32, height: 32, borderRadius: 8,
-            background: "linear-gradient(135deg, #0078d4, #005a9e)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-          </div>
-          <span style={{ fontWeight: 800, fontSize: 16, color: "#111827", fontFamily: "'Georgia', serif", letterSpacing: "-0.3px" }}>
-            Cadence <span style={{ color: "#0078d4" }}>Leads</span>
-          </span>
+          <img src="/logo.png" alt="Cadence Leads" style={{ height: 40, width: "auto", objectFit: "contain" }} />
         </div>
         {leads.length > 0 && (
           <button onClick={saveToSheets} style={{
@@ -524,3 +513,4 @@ export default function App() {
     </div>
   );
 }
+
