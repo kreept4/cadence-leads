@@ -10,7 +10,9 @@ export default async function handler(req, res) {
       headers: { "Content-Type": "application/json", "x-api-key": process.env.FREEMODEL_API_KEY, "anthropic-version": "2023-06-01" },
       body: JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: 2500, messages: [{ role: "user", content: `Find ${leadCount} B2B leads for: "${query}". Return only a JSON array with: company, industry, location, contactName, contactTitle, email, website, linkedin, fitScore, fitReason, regulation, pitch, followUp.` }] }),
     });
-    const data = await response.json();
+    const text = await response.text();
+    let data;
+    try { data = JSON.parse(text); } catch { console.error("Freemodel non-JSON:", text.slice(0, 300)); return res.status(500).json({ error: "Freemodel returned an error: " + text.slice(0, 100) }); }
     if (!response.ok) return res.status(500).json({ error: data?.error?.message || "API error" });
     const raw = data.content?.[0]?.text || "[]";
     const clean = raw.replace(/```json|```/g, "").trim();
@@ -19,5 +21,3 @@ export default async function handler(req, res) {
     return res.status(200).json({ leads });
   } catch (err) { return res.status(500).json({ error: err.message || "Unknown error" }); }
 }
-
-
