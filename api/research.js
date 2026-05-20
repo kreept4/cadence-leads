@@ -7,9 +7,9 @@ export default async function handler(req, res) {
   const leadCount = Math.min(Number(count) || 5, 20);
 
   try {
-    const r = await fetch("https://cc.freemodel.dev/v1/messages", {
+    const r = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
-      headers: { "Content-Type": "application/json", "x-api-key": process.env.FREEMODEL_API_KEY, "anthropic-version": "2023-06-01" },
+      headers: { "Content-Type": "application/json", "x-api-key": process.env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
       body: JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: 2000, messages: [{ role: "user", content: `Generate ${leadCount} B2B leads for: "${query}". Return ONLY a JSON array. Fields: company, industry, location, contactName, contactTitle, email, website, linkedin, fitScore (1-10), fitReason, regulation, pitch (personalised outreach from Bolu Ogunleye, compliance lawyer at Cadence Compliance, referencing a specific compliance challenge), followUp.` }] }),
     });
     const text = await r.text();
