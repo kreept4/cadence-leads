@@ -252,6 +252,22 @@ export default function App() {
     handleSearch(industry.query);
   }
 
+  async function pushToSheets() {
+    if (!leads.length) return;
+    try {
+      const res = await fetch("/api/sheets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ leads }),
+      });
+      const data = await res.json();
+      if (data.success) alert(data.count + " leads saved to Google Sheets!");
+      else alert("Sheets error: " + data.error);
+    } catch (err) {
+      alert("Failed to reach Sheets API: " + err.message);
+    }
+  }
+
   async function saveToSheets() {
     if (!leads.length) return;
     const headers = ["Company", "Industry", "Location", "Contact", "Website", "LinkedIn", "Fit Score", "Fit Reason", "Regulation", "Follow-up", "Pitch"];
@@ -296,16 +312,22 @@ export default function App() {
           <img src="/logo.png" alt="Cadence Leads" style={{ height: 40, width: "auto", objectFit: "contain" }} />
         </div>
         {leads.length > 0 && (
-          <button onClick={saveToSheets} style={{
-            background: "#0078d4", color: "#fff", border: "none",
-            borderRadius: 8, padding: "7px 16px", fontSize: 13, fontWeight: 600,
-            cursor: "pointer", display: "flex", alignItems: "center", gap: 6,
-          }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
-            </svg>
-            Export CSV
-          </button>
+          <div style={{ display: "flex", gap: 8 }}>
+            <button onClick={saveToSheets} style={{
+              background: "#0078d4", color: "#fff", border: "none",
+              borderRadius: 8, padding: "7px 16px", fontSize: 13, fontWeight: 600,
+              cursor: "pointer",
+            }}>
+              Export CSV
+            </button>
+            <button onClick={pushToSheets} style={{
+              background: "#16a34a", color: "#fff", border: "none",
+              borderRadius: 8, padding: "7px 16px", fontSize: 13, fontWeight: 600,
+              cursor: "pointer",
+            }}>
+              Save to Sheets
+            </button>
+          </div>
         )}
       </nav>
 
@@ -513,4 +535,7 @@ export default function App() {
     </div>
   );
 }
+
+
+
 
