@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     const response = await fetch("https://cc.freemodel.dev/v1/messages", {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-api-key": process.env.FREEMODEL_API_KEY, "anthropic-version": "2023-06-01" },
-      body: JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: 1500, messages: [{ role: "user", content: `Generate exactly ${leadCount} B2B sales leads for: "${query}". Return ONLY a valid JSON array, no explanation, no markdown. If you lack real data for a location, generate plausible realistic companies. Each object must have exactly these fields: company, industry, location, contactName, contactTitle, email, website, linkedin, fitScore (number 1-10), fitReason, regulation, pitch, followUp. Array must have exactly ${leadCount} items.` }] }),
+      body: JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: 1500, messages: [{ role: "user", content: `Generate exactly ${leadCount} B2B sales leads for: "${query}". Return ONLY a valid JSON array, no explanation, no markdown. Each object must have exactly these fields: company, industry, location, contactName, contactTitle, email, website, linkedin, fitScore (number 1-10), fitReason, regulation, pitch, followUp. For the pitch field, write a personalised outreach message from Bolu Ogunleye, a qualified lawyer, certified mediator and compliance specialist at Cadence Compliance. The pitch should: open with a specific observation about the company or industry, reference a real compliance challenge they likely face, and offer a concrete next step. Keep it under 5 sentences. Tone: confident, professional, direct. Array must have exactly ${leadCount} items.` }] }),
     });
     const text = await response.text();
     let data;
@@ -21,5 +21,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ leads });
   } catch (err) { return res.status(500).json({ error: err.message || "Unknown error" }); }
 }
+
+
 
 
