@@ -10,12 +10,11 @@ export default async function handler(req, res) {
     const r = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-api-key": process.env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
-      body: JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: 2000, messages: [{ role: "user", content: Generate ${leadCount} B2B sales leads for: "${query}". This query may reference any city or country worldwide - always return results regardless of location. If exact companies are unknown for that location, generate realistic plausible ones. Return ONLY a valid JSON array, no explanation, no markdown, no preamble. Each object must have exactly: company, industry, location, contactName, contactTitle, email, website, linkedin, fitScore (1-10), fitReason, regulation, pitch (personalised outreach from Bolu Ogunleye, compliance lawyer at Cadence Compliance, referencing a specific compliance challenge they face), followUp. Array must have exactly ${leadCount} items.
- }] }),
+      body: JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: 2000, messages: [{ role: "user", content: `Generate ${leadCount} B2B sales leads for: "${query}". This query may reference any city or country worldwide - always return results regardless of location. If exact companies are unknown for that location, generate realistic plausible ones. Return ONLY a valid JSON array, no explanation, no markdown, no preamble. Each object must have exactly: company, industry, location, contactName, contactTitle, email, website, linkedin, fitScore (1-10), fitReason, regulation, pitch (personalised outreach from Bolu Ogunleye, compliance lawyer at Cadence Compliance, referencing a specific compliance challenge they face), followUp. Array must have exactly ${leadCount} items.` }] }),
     });
     const text = await r.text();
     let data;
-    try { data = JSON.parse(text); } catch { return res.status(500).json({ error: "Freemodel error: " + text.slice(0, 100) }); }
+    try { data = JSON.parse(text); } catch { return res.status(500).json({ error: "API error: " + text.slice(0, 100) }); }
     if (!r.ok) return res.status(500).json({ error: data?.error?.message || "API error" });
     const raw = data.content?.[0]?.text || "[]";
     const clean = raw.replace(/```json|```/g, "").trim();
