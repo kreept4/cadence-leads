@@ -83,7 +83,7 @@ function LeadCard({ lead, index }) {
                 <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#9ca3af", display: "inline-block" }} /> AI Generated
               </span>
             )}
-
+          </div>
           <div style={{ fontSize: 13, color: "#6b7280", marginTop: 2, display: "flex", gap: 10, flexWrap: "wrap" }}>
             <span>{lead.industry}</span>
             <span style={{ color: "#d1d5db" }}>&middot;</span>
