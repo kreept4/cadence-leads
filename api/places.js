@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   const { query, count = 5 } = req.body;
   if (!query) return res.status(400).json({ error: "Query required" });
   const apiKey = process.env.GOOGLE_MAPS_API_KEY;
-  const apolloKey = process.env.APOLLO_API_KEY;
+
   try {
     const searchRes = await fetch("https://places.googleapis.com/v1/places:searchText", {
       method: "POST",
@@ -16,19 +16,19 @@ export default async function handler(req, res) {
     const places = searchData.places || [];
     if (places.length === 0) return res.status(200).json({ leads: [], source: "none" });
     const placeSummaries = places.map(p => ({ company: p.displayName?.text || "Unknown", location: p.formattedAddress || "", website: p.websiteUri || "", types: (p.types || []).join(", "), contactVerified: false }));
-    const enrichedSummaries = await Promise.all(placeSummaries.map(async (place) => {
-      try {
-        const contactRes = await fetch("https://api.apollo.io/api/v1/contacts/search", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "x-api-key": apolloKey },
-          body: JSON.stringify({ q_organization_name: place.company, person_titles: ["compliance officer","chief compliance officer","head of compliance","data protection officer","legal counsel","general counsel","ceo","managing director","founder"], page: 1, per_page: 1 }),
-        });
-        const contactData = await contactRes.json();
-        const contact = contactData?.contacts?.[0];
-        if (contact) return { ...place, contactName: ((contact.first_name || "") + " " + (contact.last_name || "")).trim(), contactTitle: contact.title || "", email: contact.email || "", linkedin: contact.linkedin_url || "", contactVerified: true };
-      } catch (_) {}
-      return place;
-    }));
+    const enrichedSummaries = placeSummaries;
+
+
+
+
+
+
+
+
+
+
+
+
     const enrichRes = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-api-key": process.env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
