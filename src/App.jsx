@@ -187,8 +187,20 @@ export default function App() {
   const [activeIndustry, setActiveIndustry] = useState(null);
   const [progress, setProgress] = useState({ current: 0, total: 0 });
   const abortRef = useRef(null);
-
   async function fetchLeads(q, n) {
+    // Try Places API first for real businesses
+    try {
+      const placesRes = await fetch("/api/places", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: q, count: n }),
+      });
+      const placesData = await placesRes.json();
+      if (placesRes.ok && placesData.leads && placesData.leads.length >= 3) {
+        return placesData.leads;
+      }
+    } catch (_) {}
+    // Fall back to AI if Places returns fewer than 3 results
     const res = await fetch("/api/research", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -196,7 +208,21 @@ export default function App() {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "API error");
-    return data.leads || [];
+    return (data.leads || []).map(l => ({ ...l, source: "ai" }));
+  }
+        return placesData.leads;
+      }
+    } catch (_) {}
+    // Fall back to AI if Places returns fewer than 3 results
+    const res = await fetch("/api/research", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query: q, count: n }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "API error");
+    return (data.leads || []).map(l => ({ ...l, source: "ai" }));
+  }
   }
 
   async function handleSearch(customQuery) {
@@ -535,6 +561,7 @@ export default function App() {
     </div>
   );
 }
+
 
 
 
