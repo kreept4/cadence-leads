@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+﻿import { useState, useRef } from "react";
 
 const INDUSTRIES = [
   { label: "Fintech", query: "Fintech startups and digital payment companies in Nigeria, UK, and Canada" },
@@ -74,14 +74,23 @@ function LeadCard({ lead, index }) {
               <span style={{ width: 6, height: 6, borderRadius: "50%", background: fit.dot, display: "inline-block" }} />
               {lead.fit_score} Fit
             </span>
-          </div>
+            {lead.contactVerified ? (
+              <span style={{ fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 20, background: "#dcfce7", color: "#166534", display: "flex", alignItems: "center", gap: 4 }}>
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#16a34a", display: "inline-block" }} /> Verified Contact
+              </span>
+            ) : (
+              <span style={{ fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 20, background: "#f3f4f6", color: "#6b7280", display: "flex", alignItems: "center", gap: 4 }}>
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#9ca3af", display: "inline-block" }} /> AI Generated
+              </span>
+            )}
+
           <div style={{ fontSize: 13, color: "#6b7280", marginTop: 2, display: "flex", gap: 10, flexWrap: "wrap" }}>
             <span>{lead.industry}</span>
-            <span style={{ color: "#d1d5db" }}>·</span>
+            <span style={{ color: "#d1d5db" }}>&middot;</span>
             <span>{lead.location}</span>
             {lead.regulation && (
               <>
-                <span style={{ color: "#d1d5db" }}>·</span>
+                <span style={{ color: "#d1d5db" }}>&middot;</span>
                 <span style={{
                   background: "#eff6ff", color: "#1d4ed8",
                   fontSize: 11, padding: "1px 7px", borderRadius: 10, fontWeight: 600,
@@ -403,7 +412,7 @@ export default function App() {
                 cursor: loading ? "not-allowed" : "pointer", transition: "background 0.15s",
               }}
             >
-              {loading && progress.total === 0 ? "Searching…" : "Search"}
+              {loading && progress.total === 0 ? "Searchingâ€¦" : "Search"}
             </button>
             <button
               onClick={handleAllIndustries}
@@ -483,7 +492,7 @@ export default function App() {
         {loading && progress.total > 0 && (
           <div style={{ marginBottom: 20 }}>
             <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#6b7280", marginBottom: 6 }}>
-              <span>Searching all industries…</span>
+              <span>Searching all industriesâ€¦</span>
               <span>{progress.current}/{progress.total}</span>
             </div>
             <div style={{ background: "#e5e7eb", borderRadius: 99, height: 6 }}>
@@ -504,7 +513,7 @@ export default function App() {
               borderTopColor: "#0078d4", borderRadius: "50%",
               animation: "spin 0.8s linear infinite", margin: "0 auto 12px",
             }} />
-            <div style={{ fontSize: 14, fontWeight: 500 }}>Finding prospects…</div>
+            <div style={{ fontSize: 14, fontWeight: 500 }}>Finding prospectsâ€¦</div>
           </div>
         )}
 
@@ -523,7 +532,7 @@ export default function App() {
           <div>
             <div style={{ fontSize: 13, color: "#6b7280", marginBottom: 14, fontWeight: 500 }}>
               {leads.length} prospect{leads.length !== 1 ? "s" : ""} found
-              {loading && progress.total > 0 && " — loading more…"}
+              {loading && progress.total > 0 && " â€” loading moreâ€¦"}
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {leads.map((lead, i) => (
@@ -547,6 +556,7 @@ export default function App() {
     </div>
   );
 }
+
 
 
 
