@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     const placeSummaries = places.map(p => ({ company: p.displayName?.text || "Unknown", location: p.formattedAddress || "", website: p.websiteUri || "", types: (p.types || []).join(", "), contactVerified: false }));
 
     // Step 2: Web search each company for a real specific detail
-    const topPlaces = placeSummaries.slice(0, 5);
+    const topPlaces = placeSummaries.slice(0, 3);
 
     // Step 2: Web search top 3 companies sequentially to avoid rate limits
     const withContext = [];
@@ -37,9 +37,9 @@ export default async function handler(req, res) {
         const context = wsData.content?.find(b => b.type === "text")?.text || "NO_CONTEXT";
         withContext.push({ ...place, context: context.includes("NO_CONTEXT") ? "" : context.trim() });
       } catch (_) { withContext.push({ ...place, context: "" }); }
-      await new Promise(r => setTimeout(r, 1000));
+      await new Promise(r => setTimeout(r, 500));
     }
-    const remaining = placeSummaries.slice(5).map(p => ({ ...p, context: "" }));
+    const remaining = placeSummaries.slice(3).map(p => ({ ...p, context: "" }));
     const allCompanies = [...withContext, ...remaining];
     const enrichData = await enrichRes.json();
     const raw = enrichData.content?.[0]?.text || "[]";
