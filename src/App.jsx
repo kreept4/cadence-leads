@@ -210,20 +210,6 @@ export default function App() {
     if (!res.ok) throw new Error(data.error || "API error");
     return (data.leads || []).map(l => ({ ...l, source: "ai" }));
   }
-        return placesData.leads;
-      }
-    } catch (_) {}
-    // Fall back to AI if Places returns fewer than 3 results
-    const res = await fetch("/api/research", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: q, count: n }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "API error");
-    return (data.leads || []).map(l => ({ ...l, source: "ai" }));
-  }
-  }
 
   async function handleSearch(customQuery) {
     const q = customQuery || query;
