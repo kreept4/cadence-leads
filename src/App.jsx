@@ -1,4 +1,4 @@
-﻿import { useState, useRef } from "react";
+import { useState, useRef } from "react";
 
 const INDUSTRIES = [
   { label: "Fintech", query: "Fintech startups and digital payment companies in Nigeria, UK, and Canada" },
@@ -67,6 +67,7 @@ function LeadCard({ lead, index }) {
             <span style={{ fontWeight: 700, fontSize: 15, color: "#111827", fontFamily: "'Georgia', serif" }}>
               {lead.company}
             </span>
+            {lead.source === "real" ? (<span style={{ fontSize: 10, fontWeight: 700, background: "#dcfce7", color: "#166534", borderRadius: 4, padding: "2px 6px" }}>VERIFIED</span>) : (<span style={{ fontSize: 10, fontWeight: 700, background: "#fef3c7", color: "#92400e", borderRadius: 4, padding: "2px 6px" }}>AI</span>)}
             <span style={{
               fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 20,
               background: fit.bg, color: fit.text, display: "flex", alignItems: "center", gap: 4,
@@ -412,7 +413,7 @@ export default function App() {
                 cursor: loading ? "not-allowed" : "pointer", transition: "background 0.15s",
               }}
             >
-              {loading && progress.total === 0 ? "Searchingâ€¦" : "Search"}
+              {loading && progress.total === 0 ? "Searching…" : "Search"}
             </button>
             <button
               onClick={handleAllIndustries}
@@ -492,7 +493,7 @@ export default function App() {
         {loading && progress.total > 0 && (
           <div style={{ marginBottom: 20 }}>
             <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#6b7280", marginBottom: 6 }}>
-              <span>Searching all industriesâ€¦</span>
+              <span>Searching all industries…</span>
               <span>{progress.current}/{progress.total}</span>
             </div>
             <div style={{ background: "#e5e7eb", borderRadius: 99, height: 6 }}>
@@ -513,7 +514,7 @@ export default function App() {
               borderTopColor: "#0078d4", borderRadius: "50%",
               animation: "spin 0.8s linear infinite", margin: "0 auto 12px",
             }} />
-            <div style={{ fontSize: 14, fontWeight: 500 }}>Finding prospectsâ€¦</div>
+            <div style={{ fontSize: 14, fontWeight: 500 }}>Finding prospects…</div>
           </div>
         )}
 
@@ -532,7 +533,7 @@ export default function App() {
           <div>
             <div style={{ fontSize: 13, color: "#6b7280", marginBottom: 14, fontWeight: 500 }}>
               {leads.length} prospect{leads.length !== 1 ? "s" : ""} found
-              {loading && progress.total > 0 && " â€” loading moreâ€¦"}
+              {loading && progress.total > 0 && " — loading more…"}
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {leads.map((lead, i) => (
@@ -556,6 +557,7 @@ export default function App() {
     </div>
   );
 }
+
 
 
 
